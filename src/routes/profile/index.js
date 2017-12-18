@@ -39,12 +39,12 @@ class Profile extends Component {
 	};
 
 	// Note: `user` comes from the URL, courtesy of our router
-	render({ user }, { time, count }) {
+	render({ user }, { time, count, userData }) {
 		return (
 			<div class={style.profile}>
 				<h1>Profile: {user}</h1>
 				<p>This is the user profile for a user named { user }.</p>
-				<p>balance: {this.state.userData.balance}</p>
+				<p>balance: {userData.balance}</p>
 				<div>Current time: {new Date(time).toLocaleString()}</div>
 
 				<p>

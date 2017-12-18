@@ -5,6 +5,8 @@ import Header from './header';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 import Login from '../routes/login';
+import Transfer from '../routes/transfer';
+import Game from '../routes/game';
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
@@ -23,10 +25,12 @@ export default class App extends Component {
 			<div id="app">
 				<Header/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/"/>
-					<Profile path="/profile/" user="me"/>
-					<Profile path="/profile/:user"/>
-					<Login path="/login/"/>
+					<Home path="/" />
+					<Profile path="/profile/" user="me" />
+					<Profile path="/profile/:user" />
+					<Login path="/login/" />
+					<Transfer path="/transfer/" />
+					<Game path="/game/" />
 				</Router>
 			</div>
 		);

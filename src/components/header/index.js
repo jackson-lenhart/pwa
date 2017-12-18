@@ -9,7 +9,7 @@ class Header extends Component {
 		if (isLoggedIn) {
 			return (
 				<header class={style.header}>
-					<Link href="/"><h1>Preact App</h1></Link>
+					<Link href="/"><h1>Home</h1></Link>
 					<nav>
 						<Link activeClassName={style.active} href={`/profile/${currentUser}`}>{currentUser}</Link>
 						<Link activeClassName={style.active} style={{ cursor: "pointer" }} onClick={logOut}>Log Out</Link>
@@ -20,7 +20,7 @@ class Header extends Component {
 
 		return (
 			<header class={style.header}>
-				<Link href="/"><h1>Preact App</h1></Link>
+				<Link href="/"><h1>Home</h1></Link>
 				<nav>
 					<Link activeClassName={style.active} href="/login">Log In</Link>
 				</nav>

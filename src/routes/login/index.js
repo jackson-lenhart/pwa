@@ -54,13 +54,14 @@ class Login extends Component {
   render() {
     return (
       <div style={{ padding: "100px" }}>
-        <p>User:</p>
-        <input type="text" name="user" onInput={this.handleInput}/>
-        <p>Password:</p>
-        <input type="password" name="password" onInput={this.handleInput}/>
-        <br/>
-        <button type="button" onClick={this.handleLogin}>Log In</button>
-        <br/>
+        <form>
+          <p>User:</p>
+          <input type="text" name="user" onInput={this.handleInput}/>
+          <p>Password:</p>
+          <input type="password" name="password" onInput={this.handleInput}/>
+          <br/>
+          <button type="button" onClick={this.handleLogin}>Log In</button>
+        </form>
         {this.state.error}
       </div>
     );
@@ -69,7 +70,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		login: user => {
+		login: (user) => {
 			dispatch({
 				type: "LOGIN",
 				payload: user
