@@ -34,7 +34,7 @@ export default class Game extends Component {
     });
   }
 
-  endGame(count, user) {
+  endGame() {
     this.setState({
       active: false,
       complete: true

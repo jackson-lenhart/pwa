@@ -26,9 +26,7 @@ class ChooseOpponent extends Component {
   render() {
     if (this.state.friends.length === 0) return null;
 
-    let i = -1;
-    const friendList = this.state.friends.map((el) => {
-      i++;
+    const friendList = this.state.friends.map((el, i) => {
       return (
         <Link key={i} onClick={() => {
           this.props.setOpponent(el.user);
