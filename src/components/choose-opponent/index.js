@@ -2,13 +2,19 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
+import shortid from 'shortid';
 
 import style from './style';
 
 class ChooseOpponent extends Component {
-  state = {
-    friends: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      friends: []
+    };
+
+    this.gameId = shortid.generate();
+  }
 
   componentDidMount() {
     fetch("http://localhost:4567/allusers")
@@ -30,7 +36,7 @@ class ChooseOpponent extends Component {
       return (
         <Link key={i} onClick={() => {
           this.props.setOpponent(el.user);
-          this.props.startGame();
+          this.props.startGame(this.gameId);
         }}>
           <p style={{ cursor: 'pointer' }}>{el.user}</p>
         </Link>

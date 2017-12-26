@@ -11,7 +11,7 @@ class Home extends Component {
 				<div class={style.home}>
 					<h1>Welcome back {this.props.currentUser}</h1>
 					<p>This is the Home component.</p>
-					<Link href="/game">Start a New Game</Link>
+					<Link href="/game">Games</Link><br/>
 				</div>
 			);
 		}

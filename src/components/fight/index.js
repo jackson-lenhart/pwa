@@ -3,7 +3,7 @@ import { connect } from 'preact-redux';
 
 import style from './style';
 
-class Fight extends Component {
+export default class Fight extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,32 +11,41 @@ class Fight extends Component {
     };
   }
 
-  componentWillUnmount() {
-    const headers = new Headers({
-      "Content-Type": "application/json"
-    });
+  componentDidMount() {
+    this.timer();
+    /*if (this.props.gameId.length === 0) {
+      this.props.startGame();
+    }*/
+  }
 
+  timer = () => {
+    setTimeout(() => {
+      this.postScore();
+    }, 3000);
+  };
+
+  postScore() {
     const options = {
-      headers,
+      headers: {
+        "Content-Type": "application/json"
+      },
       method: "POST",
       body: JSON.stringify({
         count: this.state.counter,
-        user: this.props.currentUser
+        user: this.props.currentUser,
+        gameId: this.props.gameId
       })
     };
 
-    fetch("http://localhost:4567/postgame", options)
+    fetch("http://localhost:4567/postscore", options)
       .then((res) => {
         return res.json();
       }).then((res) => {
         console.log(res);
+        this.props.finishFight(this.state.counter);
       }).catch((err) => {
         console.error(err);
       });
-  }
-
-  timer = () => {
-    setTimeout(() => this.props.endGame(), 3000);
   }
 
   five(x) {
@@ -49,12 +58,11 @@ class Fight extends Component {
         counter: this.state.counter - 5
       });
     } else {
-      console.log("Somethings very wrong with five");
+      console.error("Incorrect value passed to 5. Must be 0 or 1");
     }
   }
 
   render() {
-    this.timer();
     return (
       <div class={style.fight}>
         <h1>Game vs {this.props.opponent}</h1>
@@ -65,11 +73,3 @@ class Fight extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.currentUser
-  };
-};
-
-export default connect(mapStateToProps)(Fight);
