@@ -1,0 +1,16 @@
+12/25/2017 next step: don't start the clock immediately on hitting endpoint /startgame.
+have it wait for a response
+
+- Lift state up { pending } to game route. Render <Pending /> if state.pending is true.
+
+- From game we want to set pending to false from pending component. (pass such function as prop)
+
+* There is not startfight endpoint. Could prove to be an issue
+
+- Upon choose game from menu, hit postuser endpoint with currentUser and gameId
+
+- Eventually the page should be locked after posting a game
+
+- On logout should reroute to home
+
+- On every game finish, apply difference to balance of participating players

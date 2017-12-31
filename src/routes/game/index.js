@@ -6,6 +6,7 @@ import ChooseOpponent from '../../components/choose-opponent';
 import Fight from '../../components/fight';
 import Finish from '../../components/finish';
 import Menu from '../../components/menu';
+import Pending from '../../components/pending';
 
 import style from './style';
 
@@ -18,6 +19,7 @@ class Game extends Component {
       fighting: false,
       complete: false,
       selecting: false,
+      pending: false,
       totalCount: 0,
       gameId: ""
     };
@@ -25,6 +27,7 @@ class Game extends Component {
     this.setOpponent = this.setOpponent.bind(this);
     this.startGame = this.startGame.bind(this);
     this.chooseGame = this.chooseGame.bind(this);
+    this.startFight = this.startFight.bind(this);
     this.finishFight = this.finishFight.bind(this);
   }
 
@@ -53,6 +56,7 @@ class Game extends Component {
         method: "POST",
         body: JSON.stringify({
           gameId,
+          users: [this.props.currentUser],
           scores: []
         })
       };
@@ -62,8 +66,10 @@ class Game extends Component {
         .then((res) => {
           console.log(res);
           this.setState({
-            fighting: true,
+            pending: true,
             gameId: gameId
+          }, () => {
+            console.log("Helo from set state in startgame?", this.state);
           });
         }).catch((err) => {
           console.error(err)
@@ -72,10 +78,36 @@ class Game extends Component {
   }
 
   chooseGame(gameId, opponent) {
+    const options = {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        user: this.props.currentUser,
+        gameId: gameId
+      })
+    };
+
+    fetch("http://localhost:4567/postuser/", options)
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({
+          gameId: gameId,
+          selecting: false,
+          opponent: opponent,
+          fighting: true
+        });
+        console.log("Data from postuser response", data);
+      }).catch((err) => {
+        console.error(err);
+      });
+  }
+
+  startFight(opponent) {
     this.setState({
-      gameId: gameId,
-      selecting: false,
       opponent: opponent,
+      pending: false,
       fighting: true
     });
   }
@@ -89,6 +121,15 @@ class Game extends Component {
   }
 
   render() {
+    if (this.state.pending) {
+      return (
+        <div class={style.game}>
+          <Pending
+            gameId={this.state.gameId}
+            startFight={this.startFight} />
+        </div>
+      );
+    }
     if (this.state.fighting) {
       return (
         <div class={style.game}>

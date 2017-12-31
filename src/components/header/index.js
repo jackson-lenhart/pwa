@@ -1,18 +1,27 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
+import { route } from 'preact-router';
 import { Link } from 'preact-router/match';
 
 import style from './style';
 
 class Header extends Component {
-	render({ isLoggedIn, currentUser, logOut }) {
+	handleLogout = () => {
+		this.props.logout();
+		route("/", true);
+	};
+
+	render({ isLoggedIn, currentUser }) {
 		if (isLoggedIn) {
 			return (
 				<header class={style.header}>
 					<Link href="/"><h1>Home</h1></Link>
 					<nav>
 						<Link activeClassName={style.active} href={`/profile/${currentUser}`}>{currentUser}</Link>
-						<Link activeClassName={style.active} style={{ cursor: "pointer" }} onClick={logOut}>Log Out</Link>
+						<Link
+							activeClassName={style.active}
+							style={{ cursor: "pointer" }}
+							onClick={this.handleLogout}>Log Out</Link>
 					</nav>
 				</header>
 			);
@@ -38,7 +47,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		logOut: () => {
+		logout: () => {
 			dispatch({
 				type: "LOGOUT"
 			});

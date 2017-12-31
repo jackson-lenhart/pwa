@@ -13,9 +13,6 @@ export default class Fight extends Component {
 
   componentDidMount() {
     this.timer();
-    /*if (this.props.gameId.length === 0) {
-      this.props.startGame();
-    }*/
   }
 
   timer = () => {

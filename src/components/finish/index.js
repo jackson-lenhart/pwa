@@ -8,32 +8,37 @@ class Finish extends Component {
     super(props);
     this.state = {
       won: false,
+      lost: false,
       difference: 0,
       tie: false,
-      pending: false,
+      pending: true,
       gameData: {}
     };
 
-    this.endGame = this.endGame.bind(this);
+    this.evaluateGame = this.evaluateGame.bind(this);
   }
 
   componentDidMount() {
+    this.timer = setInterval(this.fetchGame, 1000);
+  }
+
+  fetchGame = () => {
     fetch(`http://localhost:4567/games/${this.props.gameId}`)
       .then((res) => res.json())
       .then((res) => {
         console.log("RES FROM GAMEFETCH", res);
         if (res.scores.length > 1) {
+          clearInterval(this.timer);
           this.setState({
             gameData: res
-          }, () => this.endGame());
+          }, () => this.evaluateGame());
         }
-        else this.setState({ pending: true });
       }).catch((err) => {
         console.error(err);
       });
-  }
+  };
 
-  endGame() {
+  evaluateGame() {
     const headers = new Headers({
       "Content-Type": "application/json"
     });
@@ -49,8 +54,8 @@ class Finish extends Component {
     fetch("http://localhost:4567/endgame", options)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res, "RES FROM ENDGAME FETCH");
-        console.log(this.props, "PROPS ENDGAME FINISH FETCH");
+        console.log(res, "RES FROM evaluateGame FETCH");
+        console.log(this.props, "PROPS evaluateGame FINISH FETCH");
         console.log(this.state.gameData, "GAMEDATA");
 
         const myScore =
@@ -61,20 +66,56 @@ class Finish extends Component {
           this.state.gameData.scores.filter((score) => {
             return score.user !== this.props.currentUser
           })[0].count;
+
+        let difference;
         if (myScore > theirScore) {
+          difference = myScore - theirScore;
           this.setState({
+            pending: false,
             won: true,
-            difference: myScore - theirScore
+            difference: difference
+          }, () => {
+            this.transfer(difference);
+          });
+        } else if (myScore === theirScore) {
+          difference = 0;
+          this.setState({
+            pending: false,
+            tie: true,
+            difference: difference
           });
         } else {
+          difference = theirScore - myScore;
           this.setState({
-            difference: theirScore - myScore
+            pending: false,
+            lost: true,
+            difference: difference
           });
         }
       });
   }
 
-  render({ totalCount }, { tie, won, difference, pending }) {
+  transfer = (difference) => {
+    const options = {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        from: this.props.opponent,
+        to: this.props.currentUser,
+        amount: difference
+      })
+    };
+
+    fetch("http://localhost:4567/transfer", options)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    });
+  };
+
+  render({ totalCount, opponent }, { tie, won, lost, difference, pending }) {
     if (pending) {
       return (
         <div class={style.finish}>
@@ -95,15 +136,23 @@ class Finish extends Component {
       return (
         <div class={style.finish}>
           <h1>Congratulations!</h1>
-          <p>You beat by {difference}</p>
+          <p>You beat {opponent} by {difference}</p>
         </div>
       );
     }
 
+    if (lost) {
+      return (
+        <div class={style.finish}>
+          <h1>Oops</h1>
+          <p>You lost to {opponent} by {difference}</p>
+        </div>
+      )
+    }
+
     return (
       <div class={style.finish}>
-        <h1>Oops</h1>
-        <p>You lost by {difference}</p>
+        <p>Case not accounted for.</p>
       </div>
     )
   }

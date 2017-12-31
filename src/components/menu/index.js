@@ -26,12 +26,11 @@ export default class Menu extends Component {
       );
     }
 
-    //todo
     const content = games.map((el) =>
       <div key={el.gameId} class={style.line}>
         <p class={style.item}>
-          <Link onClick={() => chooseGame(el.gameId, el.scores[0].user)}>
-            {el.scores[0].user}: {el.scores[0].count}
+          <Link onClick={() => chooseGame(el.gameId, el.users[0])}>
+            {el.users[0]} {el.gameId}
           </Link>
         </p>
       </div>
