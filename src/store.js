@@ -4,7 +4,8 @@ import storage from 'redux-persist/es/storage';
 
 const reducer = (state = {
   isLoggedIn: false,
-  currentUser: null
+  currentUser: null,
+  lockedUntilResponse: false
 }, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -20,6 +21,7 @@ const reducer = (state = {
         isLoggedIn: false,
         currentUser: null
       };
+      break;
     default:
       return { ...state };
   }

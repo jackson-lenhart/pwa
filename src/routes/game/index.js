@@ -7,7 +7,7 @@ import Fight from '../../components/fight';
 import Finish from '../../components/finish';
 import Menu from '../../components/menu';
 import Pending from '../../components/pending';
-
+import MyGames from '../../components/my-games';
 import style from './style';
 
 class Game extends Component {
@@ -29,6 +29,7 @@ class Game extends Component {
     this.chooseGame = this.chooseGame.bind(this);
     this.startFight = this.startFight.bind(this);
     this.finishFight = this.finishFight.bind(this);
+    this.mountGame = this.mountGame.bind(this);
   }
 
   setOpponent(opp) {
@@ -40,6 +41,13 @@ class Game extends Component {
   mountMenu() {
     this.setState({
       selecting: true
+    });
+  }
+
+  mountGame(gameId) {
+    this.setState({
+      pending: true,
+      gameId: gameId
     });
   }
 
@@ -156,6 +164,7 @@ class Game extends Component {
     return (
       <div class={style.game}>
         <button type="button" onClick={this.startGame}>Start New Game</button>
+        <MyGames mountGame={this.mountGame} />
         <Menu chooseGame={this.chooseGame} />
       </div>
     );

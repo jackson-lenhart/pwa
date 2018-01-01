@@ -13,6 +13,8 @@ export default class Menu extends Component {
       .then((res) => res.json())
       .then((res) => {
         this.setState({ games: res });
+      }).catch((err) => {
+        console.error(err);
       });
   }
 
@@ -27,7 +29,7 @@ export default class Menu extends Component {
     }
 
     const content = games.map((el) =>
-      <div key={el.gameId} class={style.line}>
+      <div key={el.gameId}>
         <p class={style.item}>
           <Link onClick={() => chooseGame(el.gameId, el.users[0])}>
             {el.users[0]} {el.gameId}

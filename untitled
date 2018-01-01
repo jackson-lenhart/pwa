@@ -14,3 +14,15 @@ have it wait for a response
 - On logout should reroute to home
 
 - On every game finish, apply difference to balance of participating players
+
+- Play multiple games at once!
+
+- Create my games section of game menu that lists games posted by current user that are
+  awaiting response.
+
+- Upon finish of fight, if opponent was not present (they do not post score) for fight
+  they should post score of 0
+
+  1/1/2018:
+
+  - render data for games of current user in <MyGames /> component

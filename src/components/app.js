@@ -16,7 +16,7 @@ export default class App extends Component {
 	 *	@param {string} event.url	The newly routed URL
 	 */
 
-	handleRoute = e => {
+	handleRoute = (e) => {
 		this.currentUrl = e.url;
 	};
 
