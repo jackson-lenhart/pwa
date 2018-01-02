@@ -26,3 +26,5 @@ have it wait for a response
   1/1/2018:
 
   - render data for games of current user in <MyGames /> component
+
+  - Create <History /> route

@@ -18,6 +18,7 @@ class Header extends Component {
 					<Link href="/"><h1>Home</h1></Link>
 					<nav>
 						<Link activeClassName={style.active} href={`/profile/${currentUser}`}>{currentUser}</Link>
+						<Link activeClassName={style.active} href="/history">History</Link>
 						<Link
 							activeClassName={style.active}
 							style={{ cursor: "pointer" }}
