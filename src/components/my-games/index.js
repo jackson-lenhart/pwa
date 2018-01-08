@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { Link } from 'preact-router/match';
+import { route } from 'preact-router';
 
 import style from './style';
 
@@ -10,7 +11,7 @@ class MyGames extends Component {
   };
 
   componentDidMount() {
-    fetch(`http://localhost:4567/user/${this.props.currentUser}/games`)
+    fetch(`http://192.168.0.17:4567/user/${this.props.currentUser}/games`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "DATA from user/games endpont");
@@ -18,7 +19,12 @@ class MyGames extends Component {
       });
   }
 
-  render({ currentUser, mountGame }, { myGameData }) {
+  enterGame = (gameId) => {
+    this.props.chooseGame(gameId);
+    route("/game", true);
+  };
+
+  render({ currentUser, chooseGame }, { myGameData }) {
     let child;
     (myGameData.length === 0) ? child = (
       <p>N/A</p>
@@ -26,7 +32,7 @@ class MyGames extends Component {
       myGameData.map((game) =>
         <div key={game.gameId}>
           <p class={style.item}>
-            <Link onClick={() => mountGame(game.gameId)}>
+            <Link onClick={() => this.enterGame(game.gameId)}>
               {game.gameId}
             </Link>
           </p>
@@ -44,8 +50,21 @@ class MyGames extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.user.currentUser
   };
 };
 
-export default connect(mapStateToProps)(MyGames);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    chooseGame: (gameId) => {
+      dispatch({
+        type: "CHOOSE_GAME",
+        payload: {
+          gameId
+        }
+      });
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyGames);

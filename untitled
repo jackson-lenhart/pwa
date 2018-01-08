@@ -28,3 +28,38 @@ have it wait for a response
   - render data for games of current user in <MyGames /> component
 
   - Create <History /> route
+
+  - Refactor to make some components routes and hold more state in redux store
+
+  - Add "CHOOSE_GAME" action to <Lobby /> route
+  Uncaught ReferenceError: chooseGame is not defined
+
+  - Fix lookForOpponent in <Game /> route. Try setting up interval on server instead
+    of client
+
+- In <Game />, write attribute to JSON post data that tells server whether or not to
+  set interval. (i.e., in this case, if the game is being initialized)
+
+- FIX FINISH
+  - opponent not mapped to finish?
+
+- Fix bug with profile: When param changes w/o component re-mounting, balance does not
+  change
+  - Possible fix: make seperate route for current user profile
+    (Probably should do this anyway)
+
+- Don't clear state until new game started. Remove from <Finish />. add to <Lobby />?
+
+- Need way to kill games.
+
+- Killed games crash history
+
+- Killed game triggers look for opponent. Have it trigger <Lobby /> instead
+
+- db.collection("pokerGames")
+  {
+    deck: A - K [s, d, h, c]
+    players: [String, String]
+    stacks: [Object, Object]
+    gameId: string
+  }

@@ -17,8 +17,9 @@ class Header extends Component {
 				<header class={style.header}>
 					<Link href="/"><h1>Home</h1></Link>
 					<nav>
-						<Link activeClassName={style.active} href={`/profile/${currentUser}`}>{currentUser}</Link>
+						<Link activeClassName={style.active} href={"/myprofile"}>{currentUser}</Link>
 						<Link activeClassName={style.active} href="/history">History</Link>
+						<Link activeClassName={style.active} href="/lobby">Lobby</Link>
 						<Link
 							activeClassName={style.active}
 							style={{ cursor: "pointer" }}
@@ -41,8 +42,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isLoggedIn: state.isLoggedIn,
-		currentUser: state.currentUser
+		isLoggedIn: state.user.isLoggedIn,
+		currentUser: state.user.currentUser
 	};
 };
 

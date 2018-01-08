@@ -61,7 +61,7 @@ class Transfer extends Component {
       })
     };
 
-    fetch("http://localhost:4567/transfer", options)
+    fetch("http://192.168.0.17:4567/transfer", options)
       .then((res) => {
         return res.json();
       }).then((res) => {
@@ -101,8 +101,8 @@ class Transfer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.isLoggedIn,
-    currentUser: state.currentUser
+    isLoggedIn: state.user.isLoggedIn,
+    currentUser: state.user.currentUser
   };
 };
 

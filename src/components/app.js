@@ -8,6 +8,9 @@ import Login from '../routes/login';
 import Transfer from '../routes/transfer';
 import Game from '../routes/game';
 import History from '../routes/history';
+import Lobby from '../routes/lobby';
+import Finish from '../routes/finish';
+import MyProfile from '../routes/my-profile';
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
@@ -33,6 +36,9 @@ export default class App extends Component {
 					<Transfer path="/transfer/" />
 					<Game path="/game/" />
 					<History path="/history/" />
+					<Lobby path="/lobby/" />
+					<Finish path="/finish/" />
+					<MyProfile path="/myprofile/" />
 				</Router>
 			</div>
 		);

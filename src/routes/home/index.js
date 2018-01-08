@@ -11,7 +11,7 @@ class Home extends Component {
 				<div class={style.home}>
 					<h1>Welcome back {this.props.currentUser}</h1>
 					<p>This is the Home component.</p>
-					<Link href="/game">Games</Link><br/>
+					<Link href="/lobby">Games</Link><br/>
 				</div>
 			);
 		}
@@ -25,10 +25,10 @@ class Home extends Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
-		isLoggedIn: state.isLoggedIn,
-		currentUser: state.currentUser
+		isLoggedIn: state.user.isLoggedIn,
+		currentUser: state.user.currentUser
 	};
 };
 

@@ -4,41 +4,35 @@ import { connect } from 'preact-redux';
 import style from './style';
 
 class Finish extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      won: false,
-      lost: false,
-      difference: 0,
-      tie: false,
-      pending: true,
-      gameData: {}
-    };
-
-    this.evaluateGame = this.evaluateGame.bind(this);
-  }
+  state = {
+    won: false,
+    lost: false,
+    difference: 0,
+    tie: false,
+    pending: true,
+    gameData: {}
+  };
 
   componentDidMount() {
-    this.timer = setInterval(this.fetchGame, 1000);
-  }
-
-  fetchGame = () => {
-    fetch(`http://localhost:4567/games/${this.props.gameId}`)
+    console.log(this.props, "PROPS FROM FINISH CDM")
+    fetch(`http://192.168.0.17:4567/look/${this.props.gameId}/scores`)
       .then((res) => res.json())
-      .then((res) => {
-        console.log("RES FROM GAMEFETCH", res);
-        if (res.scores.length > 1) {
-          clearInterval(this.timer);
-          this.setState({
-            gameData: res
-          }, () => this.evaluateGame());
+      .then((data) => {
+        if (!data.success) {
+          console.error(data.msg);
+          return;
         }
+        this.setState({
+          gameData: data.value
+        }, () => {
+          this.evaluateGame();
+        });
       }).catch((err) => {
         console.error(err);
       });
-  };
+  }
 
-  evaluateGame() {
+  evaluateGame = () => {
     const headers = new Headers({
       "Content-Type": "application/json"
     });
@@ -51,7 +45,7 @@ class Finish extends Component {
       })
     };
 
-    fetch("http://localhost:4567/endgame", options)
+    fetch("http://192.168.0.17:4567/endgame", options)
       .then((res) => res.json())
       .then((res) => {
         console.log(res, "RES FROM evaluateGame FETCH");
@@ -59,13 +53,16 @@ class Finish extends Component {
         console.log(this.state.gameData, "GAMEDATA");
 
         const myScore =
-          this.state.gameData.scores.filter((score) => {
-            return score.user === this.props.currentUser;
-          })[0].count;
+          this.state.gameData.scores
+            .find((score) =>
+              score.user === this.props.currentUser
+            ).count;
+
         const theirScore =
-          this.state.gameData.scores.filter((score) => {
-            return score.user !== this.props.currentUser
-          })[0].count;
+          this.state.gameData.scores
+            .find((score) =>
+              score.user === this.props.opponent
+            ).count;
 
         let difference;
         if (myScore > theirScore) {
@@ -93,7 +90,7 @@ class Finish extends Component {
           });
         }
       });
-  }
+  };
 
   transfer = (difference) => {
     const options = {
@@ -160,7 +157,10 @@ class Finish extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.user.currentUser,
+    gameId: state.game.gameId,
+    opponent: state.game.opponent,
+    totalCount: state.game.totalCount
   };
 };
 
