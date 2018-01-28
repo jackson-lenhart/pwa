@@ -61,7 +61,7 @@ class Transfer extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/transfer", options)
+    fetch("http://localhost:4567/transfer", options)
       .then((res) => {
         return res.json();
       }).then((res) => {

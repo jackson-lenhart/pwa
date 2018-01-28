@@ -13,7 +13,7 @@ class Game extends Component {
     console.log(this.props.gameId, "gameId from lookForOpponent");
 
     const gameId = this.props.gameId;
-    fetch(`http://192.168.0.17:4567/look/${gameId}/users`)
+    fetch(`http://localhost:4567/look/${gameId}/users`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.success) {
@@ -53,7 +53,7 @@ class Game extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/endgame", options)
+    fetch("http://localhost:4567/endgame", options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "Data from endgame fetch in killGame");
@@ -81,7 +81,7 @@ class Game extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/postscore", options)
+    fetch("http://localhost:4567/postscore", options)
       .then((res) => {
         return res.json();
       }).then((res) => {

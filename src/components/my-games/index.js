@@ -11,7 +11,7 @@ class MyGames extends Component {
   };
 
   componentDidMount() {
-    fetch(`http://192.168.0.17:4567/user/${this.props.currentUser}/games`)
+    fetch(`http://localhost:4567/user/${this.props.currentUser}/games`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "DATA from user/games endpont");

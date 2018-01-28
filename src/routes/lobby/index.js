@@ -14,7 +14,7 @@ class Lobby extends Component {
   };
 
   componentDidMount() {
-    fetch("http://192.168.0.17:4567/games")
+    fetch("http://localhost:4567/games")
       .then((res) => res.json())
       .then((res) => {
         console.log(res, "LOBBY CDM");
@@ -46,7 +46,7 @@ class Lobby extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/startgame", options)
+    fetch("http://localhost:4567/startgame", options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -70,7 +70,7 @@ class Lobby extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/postuser/", options)
+    fetch("http://localhost:4567/postuser/", options)
       .then((res) => res.json())
       .then((data) => {
         this.props.chooseGame(gameId);

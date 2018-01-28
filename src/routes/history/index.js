@@ -8,7 +8,7 @@ export default class History extends Component {
   };
 
   componentDidMount() {
-    fetch("http://192.168.0.17:4567/history")
+    fetch("http://localhost:4567/history")
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "DATA FROM HISTORY");

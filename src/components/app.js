@@ -11,6 +11,8 @@ import History from '../routes/history';
 import Lobby from '../routes/lobby';
 import Finish from '../routes/finish';
 import MyProfile from '../routes/my-profile';
+import PokerLobby from '../routes/poker-lobby';
+import PokerTable from '../routes/poker-table';
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
 
@@ -39,6 +41,8 @@ export default class App extends Component {
 					<Lobby path="/lobby/" />
 					<Finish path="/finish/" />
 					<MyProfile path="/myprofile/" />
+					<PokerLobby path="/poker/lobby/" />
+					<PokerTable path="/poker/table/" />
 				</Router>
 			</div>
 		);

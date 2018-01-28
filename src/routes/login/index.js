@@ -35,7 +35,7 @@ class Login extends Component {
       })
 		};
 
-		fetch("http://192.168.0.17:4567/signin", options)
+		fetch("http://localhost:4567/signin", options)
 			.then((res) => {
 				return res.json();
 			}).then((res) => {

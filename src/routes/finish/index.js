@@ -5,6 +5,7 @@ import style from './style';
 
 class Finish extends Component {
   state = {
+    result: undefined,
     won: false,
     lost: false,
     difference: 0,
@@ -15,7 +16,7 @@ class Finish extends Component {
 
   componentDidMount() {
     console.log(this.props, "PROPS FROM FINISH CDM")
-    fetch(`http://192.168.0.17:4567/look/${this.props.gameId}/scores`)
+    fetch(`http://localhost:4567/look/${this.props.gameId}/scores`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.success) {
@@ -45,7 +46,7 @@ class Finish extends Component {
       })
     };
 
-    fetch("http://192.168.0.17:4567/endgame", options)
+    fetch("http://localhost:4567/endgame", options)
       .then((res) => res.json())
       .then((res) => {
         console.log(res, "RES FROM evaluateGame FETCH");
@@ -66,28 +67,14 @@ class Finish extends Component {
 
         let difference;
         if (myScore > theirScore) {
-          difference = myScore - theirScore;
-          this.setState({
-            pending: false,
-            won: true,
-            difference: difference
-          }, () => {
-            this.transfer(difference);
-          });
-        } else if (myScore === theirScore) {
-          difference = 0;
-          this.setState({
-            pending: false,
-            tie: true,
-            difference: difference
-          });
+          this.difference = myScore - theirScore;
+          this.setState({ result: "won" });
+        } else if (myScore < theirScore) {
+          this.difference = theirScore - myScore;
+          this.transfer(this.difference);
+          this.setState({ result: "lost" });
         } else {
-          difference = theirScore - myScore;
-          this.setState({
-            pending: false,
-            lost: true,
-            difference: difference
-          });
+          this.setState({ result: "tie" });
         }
       });
   };
@@ -99,8 +86,8 @@ class Finish extends Component {
       },
       method: "POST",
       body: JSON.stringify({
-        from: this.props.opponent,
-        to: this.props.currentUser,
+        from: this.props.currentUser,
+        to: this.props.opponent,
         amount: difference
       })
     };
@@ -109,47 +96,44 @@ class Finish extends Component {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
+    }).catch((err) => {
+      console.error(err);
     });
   };
 
-  render({ totalCount, opponent }, { tie, won, lost, difference, pending }) {
-    if (pending) {
-      return (
-        <div class={style.finish}>
-          <h1>Score of {totalCount} posted. Awaiting response...</h1>
-        </div>
-      );
-    }
-
-    if (tie) {
-      return (
-        <div class={style.finish}>
+  render({ totalCount, opponent }, { tie, won, lost, difference, pending, result }) {
+    let content;
+    switch (result) {
+      case "won":
+        content = (
+          <div>
+            <h1>Congratulations!</h1>
+            <p>You beat {opponent} by {this.difference}</p>
+          </div>
+        );
+        break;
+      case "lost":
+        content = (
+          <div>
+            <h1>Oops</h1>
+            <p>You lost to {opponent} by {this.difference}</p>
+          </div>
+        );
+        break;
+      case "tie":
+        content = (
           <h1>Tie.</h1>
-        </div>
-      );
-    }
-
-    if (won) {
-      return (
-        <div class={style.finish}>
-          <h1>Congratulations!</h1>
-          <p>You beat {opponent} by {difference}</p>
-        </div>
-      );
-    }
-
-    if (lost) {
-      return (
-        <div class={style.finish}>
-          <h1>Oops</h1>
-          <p>You lost to {opponent} by {difference}</p>
-        </div>
-      )
+        );
+        break;
+      default:
+        content = (
+          <h1>Score of {totalCount} posted. Awaiting response...</h1>
+        );
     }
 
     return (
       <div class={style.finish}>
-        <p>Case not accounted for.</p>
+        {content}
       </div>
     )
   }

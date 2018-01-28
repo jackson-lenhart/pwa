@@ -14,7 +14,7 @@ class Profile extends Component {
 	componentDidMount() {
 		// start a timer for the clock:
 		this.timer = setInterval(this.updateTime, 1000);
-		fetch(`http://192.168.0.17:4567/user/${this.props.user}`)
+		fetch(`http://localhost:4567/user/${this.props.user}`)
 			.then((res) => {
 				return res.json();
 			}).then((data) => {

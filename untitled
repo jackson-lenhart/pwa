@@ -58,8 +58,26 @@ have it wait for a response
 
 - db.collection("pokerGames")
   {
-    deck: A - K [s, d, h, c]
-    players: [String, String]
+    users: [String, String]
     stacks: [Object, Object]
     gameId: string
+    active: bool
   }
+
+- db.collection("pokerHands")
+  {
+    users: [String, String]
+    stacks: [Object, Object]
+    gameId: string
+    deck: Array
+    hands: [Object, Object]
+    pot: integer
+    action: string (user)
+    active: bool
+  }
+
+- fix Math.random to multiply by actual deck length instead of 52 every time
+
+- create hand evaluator
+
+- hand eval each hand, then compare hands
