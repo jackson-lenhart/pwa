@@ -16,7 +16,7 @@ class PokerLobby extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("DATA FROM ACTIVE TABLES", data);
-        
+
         if (!data.success) {
           console.error("Unsuccessful from pokerlobby CDM");
           return;
@@ -30,6 +30,7 @@ class PokerLobby extends Component {
   }
 
   initializeTable = (tableId, buyIn) => {
+    this.props.reset();
     const options = {
       headers: {
         "Content-Type": "application/json"
@@ -51,7 +52,8 @@ class PokerLobby extends Component {
       }).catch(err => console.error(err));
   };
 
-  joinTable = (tableId, buyIn) => {
+  joinTable = (tableId, dealer, buyIn) => {
+    console.log("CURRENT USER FROM JOINTABLE", this.props.currentUser);
     const options = {
       headers: {
         "Content-Type": "application/json"
@@ -67,18 +69,19 @@ class PokerLobby extends Component {
     fetch("http://localhost:4567/poker/jointable", options)
       .then(res => res.json())
       .then(data => {
-        this.props.join(tableId, buyIn);
+        this.props.join(tableId, dealer, buyIn);
         route("/poker/table", true);
       }).catch(err => console.error(err));
   };
 
-  render({ currentUser, opponent, tableId, stack, net }, { isLoading, activeTables }) {
+  render({ currentUser, opponent, stack, net }, { isLoading, activeTables }) {
     let tables;
     isLoading ? tables = <p>Loading...</p>
       : tables = (
         activeTables.map(table =>
-          <p key={table.tableId} style={{ cursor: "pointer" }} onClick={this.joinTable}>
-            {table.tableId}
+          <p key={table.tableId} style={{ cursor: "pointer" }}
+            onClick={() => this.joinTable(table.tableId, table.dealer, 10)}>
+            dealer: {table.dealer} {table.tableId}
           </p>
         )
       );
@@ -115,13 +118,19 @@ const mapDispatchToProps = dispatch => ({
       }
     });
   },
-  join: (tableId, buyIn) => {
+  join: (tableId, dealer, buyIn) => {
     dispatch({
       type: "JOIN_TABLE",
       payload: {
         tableId,
-        buyIn
+        buyIn,
+        dealer
       }
+    });
+  },
+  reset: () => {
+    dispatch({
+      type: "RESET_PKR"
     });
   }
 });

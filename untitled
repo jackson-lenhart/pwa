@@ -81,3 +81,5 @@ have it wait for a response
 - create hand evaluator
 
 - hand eval each hand, then compare hands
+
+- loading tables should not load objectid from mongodb

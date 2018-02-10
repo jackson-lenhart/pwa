@@ -94,7 +94,9 @@ const poker = (state = initialPokerState, action) => {
       return {
         ...state,
         tableId: action.payload.tableId,
-        stack: action.payload.buyIn
+        stack: action.payload.buyIn,
+        opponent: action.payload.dealer,
+        isDealer: false
       };
     case "SET_OPPONENT_PKR":
       return {
@@ -108,7 +110,7 @@ const poker = (state = initialPokerState, action) => {
         net: state.net + action.payload.result
       };
       break;
-    case "START_HAND":
+    case "SET_HAND_ID":
       return {
         ...state,
         handId: action.payload.handId
