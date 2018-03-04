@@ -80,7 +80,7 @@ class PokerLobby extends Component {
       : tables = (
         activeTables.map(table =>
           <p key={table.tableId} style={{ cursor: "pointer" }}
-            onClick={() => this.joinTable(table.tableId, table.dealer, 10)}>
+            onClick={() => this.joinTable(table.tableId, table.dealer, 100)}>
             dealer: {table.dealer} {table.tableId}
           </p>
         )
@@ -89,7 +89,7 @@ class PokerLobby extends Component {
     return (
       <div class={style.poker}>
         <h1>Poker Lobby</h1>
-        <button type="button" onClick={() => this.initializeTable(shortid.generate(), 10)}>
+        <button type="button" onClick={() => this.initializeTable(shortid.generate(), 100)}>
           Start New Poker Table
         </button>
         <h3>Active Tables</h3>

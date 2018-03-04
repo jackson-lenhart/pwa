@@ -1,85 +1,13 @@
-12/25/2017 next step: don't start the clock immediately on hitting endpoint /startgame.
-have it wait for a response
+- add "pot" attribute to pokerHand infrastructure
 
-- Lift state up { pending } to game route. Render <Pending /> if state.pending is true.
+- fix auto-looking after hand finish
 
-- From game we want to set pending to false from pending component. (pass such function as prop)
+- probably want the stacks in each pokerHand
 
-* There is not startfight endpoint. Could prove to be an issue
+- stacks should be hash map not array of hash maps
 
-- Upon choose game from menu, hit postuser endpoint with currentUser and gameId
+- write test for bet. should be fun
 
-- Eventually the page should be locked after posting a game
+- memoize poker hands!!!
 
-- On logout should reroute to home
-
-- On every game finish, apply difference to balance of participating players
-
-- Play multiple games at once!
-
-- Create my games section of game menu that lists games posted by current user that are
-  awaiting response.
-
-- Upon finish of fight, if opponent was not present (they do not post score) for fight
-  they should post score of 0
-
-  1/1/2018:
-
-  - render data for games of current user in <MyGames /> component
-
-  - Create <History /> route
-
-  - Refactor to make some components routes and hold more state in redux store
-
-  - Add "CHOOSE_GAME" action to <Lobby /> route
-  Uncaught ReferenceError: chooseGame is not defined
-
-  - Fix lookForOpponent in <Game /> route. Try setting up interval on server instead
-    of client
-
-- In <Game />, write attribute to JSON post data that tells server whether or not to
-  set interval. (i.e., in this case, if the game is being initialized)
-
-- FIX FINISH
-  - opponent not mapped to finish?
-
-- Fix bug with profile: When param changes w/o component re-mounting, balance does not
-  change
-  - Possible fix: make seperate route for current user profile
-    (Probably should do this anyway)
-
-- Don't clear state until new game started. Remove from <Finish />. add to <Lobby />?
-
-- Need way to kill games.
-
-- Killed games crash history
-
-- Killed game triggers look for opponent. Have it trigger <Lobby /> instead
-
-- db.collection("pokerGames")
-  {
-    users: [String, String]
-    stacks: [Object, Object]
-    gameId: string
-    active: bool
-  }
-
-- db.collection("pokerHands")
-  {
-    users: [String, String]
-    stacks: [Object, Object]
-    gameId: string
-    deck: Array
-    hands: [Object, Object]
-    pot: integer
-    action: string (user)
-    active: bool
-  }
-
-- fix Math.random to multiply by actual deck length instead of 52 every time
-
-- create hand evaluator
-
-- hand eval each hand, then compare hands
-
-- loading tables should not load objectid from mongodb
+- each hand should have a "string" attribute i.e. "Ah5s3cKh3d"

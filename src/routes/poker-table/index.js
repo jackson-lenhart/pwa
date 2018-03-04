@@ -46,7 +46,7 @@ class PokerTable extends Component {
   };
 
   bet = amount => {
-
+    
   };
 
   pass = () => {

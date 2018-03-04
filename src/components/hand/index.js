@@ -22,8 +22,6 @@ class Hand extends Component {
   }
 
   startHand = () => {
-    console.log("TABLE ID?", this.props.tableId);
-    console.log("IS DEALER?", this.props.isDealer);
     console.log("OPPONENT", this.props.opponent);
     const handId = shortid.generate();
     const options = {
